@@ -1,0 +1,9 @@
+[package]
+name = "fhe-dark-chess"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Referee-free fog-of-war chess predicates (capture / blocked-slider / check) computed over an encrypted opponent board with Zama tfhe-rs"
+
+[dependencies]
+tfhe = { version = "1.6", features = ["integer"] }
