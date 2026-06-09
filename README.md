@@ -36,14 +36,17 @@ exactly the referee we set out to remove. So be precise about what each layer bu
   [fhEVM](https://docs.zama.ai/fhevm) the board lives on-chain as ciphertext handles, a
   coprocessor runs the FHE math, and a threshold committee — none of whom can decrypt
   alone — reveals only the ACL-permitted bit. That's `onchain/contracts/FogChessFHE.sol`,
-  which now **compiles and runs against the real fhEVM SDK** (`@fhevm/solidity` 0.11.1) in
-  the **mock coprocessor**: `cd onchain && npx hardhat test` commits an encrypted board,
-  runs `occupancy` / `inCheck` on-chain, and decrypts one ACL-gated bit (open rook = check,
-  blocked rook = not). The mock is **not** the live threshold KMS — a Sepolia deploy
-  against the real Gateway/KMS is the remaining step, not done here.
+  and it is **deployed and verified on live Ethereum Sepolia** — not just the mock:
+  [`0x99db76240c884F35133A6c9a12249C67a906da12`](https://sepolia.etherscan.io/address/0x99db76240c884F35133A6c9a12249C67a906da12).
+  An encrypted board was committed on-chain, `inCheck` ran on the **live coprocessor**, and
+  the result bit was decrypted by the **real threshold KMS committee** (no single
+  key-holder) — `inCheck = true` for an open rook on the e-file. (The mock — `cd onchain &&
+  npx hardhat test` — is the fast local equivalent.)
 
-So: the maths runs today (`tfhe-rs`), and the on-chain path runs against the real SDK in
-the mock; only the live threshold-KMS trust distribution is still designed, not deployed.
+So: the maths runs today (`tfhe-rs`), the on-chain path runs on real Sepolia, and the
+threshold-KMS trust distribution is now **live, not designed**. The honest residual: it was
+exercised by a single demo signer playing both seats (a real game uses two keys), on
+testnet.
 
 **Deploy to Sepolia** (turns the trust real — the live coprocessor + threshold KMS replace
 the mock's single key): see [`onchain/DEPLOY.md`](onchain/DEPLOY.md). It deploys

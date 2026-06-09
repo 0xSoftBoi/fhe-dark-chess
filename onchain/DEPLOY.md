@@ -1,5 +1,10 @@
 # Deploy FogChessFHE to live Zama fhEVM on Ethereum Sepolia
 
+> ✅ **Done once already.** `FogChessFHE` is live on Sepolia at
+> [`0x99db76240c884F35133A6c9a12249C67a906da12`](https://sepolia.etherscan.io/address/0x99db76240c884F35133A6c9a12249C67a906da12).
+> A board was committed encrypted, `inCheck` ran on the live coprocessor, and the threshold
+> KMS decrypted the result bit (`true`, open rook on the e-file). This runbook reproduces it.
+
 The hardhat tests run `FogChessFHE` in the **mock coprocessor**, which uses a single mock
 key — it proves the *computation* is referee-free but not the *trust*. This runbook takes
 the same contract to the **live** Sepolia fhEVM, where the trust becomes real:
