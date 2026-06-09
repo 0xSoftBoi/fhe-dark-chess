@@ -7,11 +7,13 @@
     "@fhevm/mock-utils": "^0.4.2",
     "@nomicfoundation/hardhat-ethers": "^3.0.0",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.5",
     "encrypted-types": "^0.0.4",
     "ethers": "^6.16.0",
     "hardhat": "^2.28.6"
   },
   "dependencies": {
-    "@fhevm/solidity": "^0.11.1"
+    "@fhevm/solidity": "^0.11.1",
+    "@zama-fhe/relayer-sdk": "0.4.3"
   }
 }

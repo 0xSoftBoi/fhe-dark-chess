@@ -45,6 +45,12 @@ exactly the referee we set out to remove. So be precise about what each layer bu
 So: the maths runs today (`tfhe-rs`), and the on-chain path runs against the real SDK in
 the mock; only the live threshold-KMS trust distribution is still designed, not deployed.
 
+**Deploy to Sepolia** (turns the trust real — the live coprocessor + threshold KMS replace
+the mock's single key): see [`onchain/DEPLOY.md`](onchain/DEPLOY.md). It deploys
+`FogChessFHE` to the live Zama fhEVM and runs `scripts/play.js`, which encrypts a board via
+the relayer SDK, runs `inCheck` on-chain, and user-decrypts the one ACL-gated bit through
+the threshold KMS — no single key-holder.
+
 ## Layout
 
 - `src/lib.rs` — encrypted board + the predicates (`occupancy`, `blocked_by_opponent`,
