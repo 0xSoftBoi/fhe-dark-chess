@@ -13,9 +13,14 @@ Educational; **not audited**; a research prototype.
   `@fhevm/solidity` 0.11.1 and **runs in the hardhat mock coprocessor** (`npx hardhat test`)
   — an encrypted board is committed on-chain, `occupancy`/`inCheck` run on the coprocessor,
   and the caller decrypts one ACL-gated bit. This exercises the real fhEVM API + flow.
-- **Still designed, not deployed:** the **live threshold KMS** (no single key-holder). The
-  mock skips real threshold decryption, HCU/gas limits, and Gateway latency; a Sepolia
-  deploy against the real Gateway/KMS (funded account + relayer auth) is the remaining step.
+- **Deployed + verified on live Sepolia:** `FogChessFHE` is live at
+  `0x99db76240c884F35133A6c9a12249C67a906da12`. An encrypted board was committed, `inCheck`
+  ran on the **live coprocessor**, and the result bit was decrypted by the **real threshold
+  KMS** (no single key-holder) — `true` for an open rook on the e-file. The single-mock-key
+  caveat no longer applies; the trust is real.
+- **Residual caveats:** the live run used a single demo signer for both seats (a real game
+  needs two keys); it is testnet only; and FHE ops are gas/HCU-heavy and slower than the
+  mock. See `onchain/DEPLOY.md` to reproduce.
 
 ## The single-key caveat (read this)
 
