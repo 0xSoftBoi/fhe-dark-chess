@@ -35,10 +35,15 @@ exactly the referee we set out to remove. So be precise about what each layer bu
 - **The TRUST (no single key-holder) needs a threshold KMS.** On Zama's
   [fhEVM](https://docs.zama.ai/fhevm) the board lives on-chain as ciphertext handles, a
   coprocessor runs the FHE math, and a threshold committee — none of whom can decrypt
-  alone — reveals only the ACL-permitted bit. That's `contracts/FogChessFHE.sol`
-  (a design sketch, not deployed: it needs the Zama network).
+  alone — reveals only the ACL-permitted bit. That's `onchain/contracts/FogChessFHE.sol`,
+  which now **compiles and runs against the real fhEVM SDK** (`@fhevm/solidity` 0.11.1) in
+  the **mock coprocessor**: `cd onchain && npx hardhat test` commits an encrypted board,
+  runs `occupancy` / `inCheck` on-chain, and decrypts one ACL-gated bit (open rook = check,
+  blocked rook = not). The mock is **not** the live threshold KMS — a Sepolia deploy
+  against the real Gateway/KMS is the remaining step, not done here.
 
-So: the maths is real and runs today; the trust distribution is designed, not deployed.
+So: the maths runs today (`tfhe-rs`), and the on-chain path runs against the real SDK in
+the mock; only the live threshold-KMS trust distribution is still designed, not deployed.
 
 ## Layout
 
@@ -46,14 +51,17 @@ So: the maths is real and runs today; the trust distribution is designed, not de
   `in_check`) and their plaintext oracles.
 - `src/main.rs` — the timed demo above.
 - `tests/predicates.rs` — encrypted-result-vs-plaintext-truth on known positions.
-- `contracts/FogChessFHE.sol` — the fhEVM on-chain design (euint8 board, the predicate via
-  `FHE.*`, ACL + threshold decryption). **Sketch, not deployed.**
+- `onchain/` — a hardhat project: `contracts/FogChessFHE.sol` on the real `@fhevm/solidity`
+  (euint8 board, the predicate via `FHE.*`, ACL-gated decryption), with `test/` that runs
+  it in the mock coprocessor. **Runs locally; live KMS deploy pending.**
 
 ## Run
 
 ```bash
 cargo test --release    # 4 tests: each predicate computed on ENCRYPTED boards == plaintext truth
 cargo run  --release    # the timed demo (measured on an Apple Silicon laptop)
+
+cd onchain && npm install && npx hardhat test   # the same predicates on-chain in the fhEVM mock
 ```
 
 `check` at ~7.6s and a secret-king variant at ~8 min are the honest cost of FHE today —
