@@ -9,9 +9,13 @@ Educational; **not audited**; a research prototype.
   answer bit (or, for a capture, the one captured square) is decrypted. The encrypted
   result is checked against a plaintext oracle on known positions. This establishes that
   the **computation** leaks nothing beyond the intended bit.
-- **Designed, not deployed (`contracts/FogChessFHE.sol`):** the threshold-KMS trust model
-  that removes the single key-holder. It needs the Zama fhEVM network (coprocessor +
-  threshold committee + Gateway). Not run here.
+- **Real SDK, mock coprocessor (`onchain/`):** `FogChessFHE.sol` compiles against
+  `@fhevm/solidity` 0.11.1 and **runs in the hardhat mock coprocessor** (`npx hardhat test`)
+  — an encrypted board is committed on-chain, `occupancy`/`inCheck` run on the coprocessor,
+  and the caller decrypts one ACL-gated bit. This exercises the real fhEVM API + flow.
+- **Still designed, not deployed:** the **live threshold KMS** (no single key-holder). The
+  mock skips real threshold decryption, HCU/gas limits, and Gateway latency; a Sepolia
+  deploy against the real Gateway/KMS (funded account + relayer auth) is the remaining step.
 
 ## The single-key caveat (read this)
 

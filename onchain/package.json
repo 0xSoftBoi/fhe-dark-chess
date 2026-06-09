@@ -1,0 +1,17 @@
+{
+  "name": "fhe-dark-chess-onchain",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "@fhevm/hardhat-plugin": "^0.4.2",
+    "@fhevm/mock-utils": "^0.4.2",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "encrypted-types": "^0.0.4",
+    "ethers": "^6.16.0",
+    "hardhat": "^2.28.6"
+  },
+  "dependencies": {
+    "@fhevm/solidity": "^0.11.1"
+  }
+}
